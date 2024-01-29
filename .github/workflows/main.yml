@@ -56,27 +56,27 @@ jobs:
       #     cd build
       #     tar -czf ios_build.tar.gz ios
 
-        #9 get those build to be available to download
-      - name: Release with Notes
-        uses: softprops/action-gh-release@v1
-        with:
-          files: |
-            build/app/outputs/flutter-apk/app-release.apk
-            build/app/outputs/bundle/release/app-release.aab
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      # - name: Upload Artifacts
-      #   uses: actions/upload-artifact@v2
+      #   #9 get those build to be available to download
+      # - name: Release with Notes
+      #   uses: softprops/action-gh-release@v1
       #   with:
-      #     name: Releases
-      #     path: |
-            
+      #     files: |
+      #       build/app/outputs/flutter-apk/app-release.apk
       #       build/app/outputs/bundle/release/app-release.aab
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: Releases
+          path: |
+            
+            build/app/outputs/bundle/release/app-release.aab
 
-      #   #10 create release with those builds 
-      # - name: Create Release
-      #   uses: ncipollo/release-action@v1
-      #   with:
-      #     artifacts: "build/app/outputs/flutter-apk/app-release.apk,build/app/outputs/bundle/release/app-release.aab"
-      #     tag: v1.0.${{ github.run_number }}
-      #     token: ${{ secrets.TOKEN }}
+        #10 create release with those builds 
+      - name: Create Release
+        uses: ncipollo/release-action@v1
+        with:
+          artifacts: "build/app/outputs/flutter-apk/app-release.apk,build/app/outputs/bundle/release/app-release.aab"
+          tag: v1.0.${{ github.run_number }}
+          token: ${{ secrets.TOKEN }}
