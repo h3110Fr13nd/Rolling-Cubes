@@ -1,16 +1,9 @@
-# rolling_cubes
+# Rolling Cubes
 
-A new Flutter project.
+![CI/CD](https://github.com/dyarleniber/react-workflow-gh-actions/workflows/main.yml/badge.svg)
 
-## Getting Started
+- Rolling Cubes is a flutter game In which there are 8 cubes arranged in a square (middle empty).
+- All squares are RED initially.
+- Your Goal is to roll the cubes on the board to make them all Blue
 
-This project is a starting point for a Flutter application.
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
