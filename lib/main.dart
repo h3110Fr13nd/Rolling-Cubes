@@ -87,7 +87,7 @@ class _RollingCubesState extends State<RollingCubes> {
   bool checkWin() {
     for (int i = 0; i < 9; i++) {
       if (i == 4 && cubes[i] != null) return false;
-      if (cubes[i] != null && cubes[i].lrtufb[4] != "R") return false;
+      if (cubes[i] != null && cubes[i].lrtufb[4] != "B") return false;
     }
     return true;
   }
