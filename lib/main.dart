@@ -183,7 +183,18 @@ class _RollingCubesState extends State<RollingCubes> {
               decoration: const InputDecoration(
                 labelText: 'Select Level',
               ),
-              onChanged: (value) {                
+              onChanged: (value) {
+                setState(() {
+                    if (!value.isEmpty) {
+                    widget.levelNum = int.parse(value);
+                    if (widget.levelNum > levelsList.length) {
+                      widget.levelNum = levelsList.length;
+                    }
+                    level = levelsList[widget.levelNum - 1];
+                    resetRollingCubes();
+                    }
+                    
+                });
               },
             ),
             // 
