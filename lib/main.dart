@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
+import 'levels.dart';
 
 void main() {
   runApp(const MyApp());
 }
 
+var levelsList = levels;
+
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
-
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -16,25 +17,15 @@ class MyApp extends StatelessWidget {
         colorScheme: const ColorScheme.dark(),
         primarySwatch: Colors.blue,
       ),
-      home: const RollingCubes(title: 'Rolling Cubes'),
+      home: RollingCubes(title: 'Rolling Cubes'),
     );
   }
 }
 
 class RollingCubes extends StatefulWidget {
-  const RollingCubes({super.key, required this.title});
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
+  RollingCubes({super.key, required this.title, this.levelNum = 8});
   final String title;
-
+  int levelNum;
   @override
   State<RollingCubes> createState() => _RollingCubesState();
 }
@@ -51,6 +42,13 @@ class _RollingCubesState extends State<RollingCubes> {
     const Cube(),
     const Cube(),
   ];
+  var level;
+
+  @override
+  void initState() {
+    super.initState();
+    level = levelsList[widget.levelNum - 1];
+  }
 
   void resetRollingCubes() {
     setState(() {
@@ -86,8 +84,21 @@ class _RollingCubesState extends State<RollingCubes> {
 
   bool checkWin() {
     for (int i = 0; i < 9; i++) {
-      if (i == 4 && cubes[i] != null) return false;
-      if (cubes[i] != null && cubes[i].lrtufb[4] != "B") return false;
+      var row = i ~/ 3;
+      var col = i % 3;
+      var end = level['end'];
+      var cubeFrontColor;
+      var cube = cubes[i];
+      if (cube == null) {
+        cubeFrontColor = "N";
+      } else {
+        cubeFrontColor = cube.lrtufb[4];
+      }
+
+      var endColor = end[row][col];
+      if (cubeFrontColor != endColor) {
+        return false;
+      }
     }
     return true;
   }
@@ -138,50 +149,49 @@ class _RollingCubesState extends State<RollingCubes> {
                     child: Column(mainAxisSize: MainAxisSize.min, children: [
                       const Text('You Did it.'),
                       ElevatedButton(
-                          onPressed: () {}, child: const Text("kjsbrk"))
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          }, child: const Text("Okay! On to The Next!"))
                     ])),
               );
             });
+        widget.levelNum++;
+        setState(() {
+          level = levelsList[widget.levelNum - 1];
+        });
+        // resetRollingCubes();
+        resetRollingCubes();
+
       }
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
     return Scaffold(
       appBar: AppBar(
-        // Here we take the value from the RollingCubes object that was created by
-        // the App.build method, and use it to set our appbar title.
         title: Text(widget.title),
       ),
       body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
         child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Invoke "debug painting" (press "p" in the console, choose the
-          // "Toggle Debug Paint" action from the Flutter Inspector in Android
-          // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-          // to see the wireframe for each widget.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             const Text(
               'Rolling Cubes',
+            ),
+            TextField(
+              decoration: const InputDecoration(
+                labelText: 'Select Level',
+              ),
+              onChanged: (value) {                
+              },
+            ),
+            // 
+            Text(
+              "Level : " + widget.levelNum.toString(),
+            ),
+            Text(
+              level['description'],
             ),
             SizedBox(
                 height: 400, // Set a fixed height for the container
@@ -204,11 +214,6 @@ class _RollingCubesState extends State<RollingCubes> {
           ],
         ),
       ),
-      // floatingActionButton: FloatingActionButton(
-      //   onPressed: _incrementCounter,
-      //   tooltip: 'Increment',
-      //   child: const Icon(Icons.add),
-      // ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
@@ -240,13 +245,3 @@ class Cube extends StatelessWidget {
     );
   }
 }
-
-// class _Cube extends State<Cube> {
-//   List<String> lrtufb = ['W',"W","W","W","R","B"];
-//
-//   @override
-//   void initState() {
-//     super.initState();
-//     lrtufb = widget.lrtufb;
-//   }
-//
