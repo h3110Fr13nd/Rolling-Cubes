@@ -12,6 +12,7 @@ jobs:
   build:
     name: Build & Release
     runs-on: ubuntu-latest
+    permissions: write-all
     steps:
         #1 Checkout repository
       - name: Checkout Repository
